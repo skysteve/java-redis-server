@@ -1,0 +1,38 @@
+plugins {
+  id 'java'
+  id 'application'
+  id 'com.github.johnrengelman.shadow' version '1.2.2'
+}
+
+repositories {
+  jcenter()
+  mavenCentral()
+}
+
+version = '1.0'
+
+def jsonSchemaVersion = '2.2.6'
+def vertexVersion = '3.2.1'
+sourceCompatibility = '1.8'
+
+dependencies {
+  compile "io.vertx:vertx-core:$vertexVersion"
+  compile "io.vertx:vertx-web:$vertexVersion"
+  compile "io.vertx:vertx-redis-client:$vertexVersion"
+  compile(group: "com.github.fge", name: "json-schema-validator", version: jsonSchemaVersion);
+}
+
+mainClassName = 'com.salecycle.impressions.Server'
+
+shadowJar {
+  classifier = 'fat'
+  mergeServiceFiles {
+    include 'META-INF/services/io.vertx.core.spi.VerticleFactory'
+  }
+}
+
+task wrapper(type: Wrapper) {
+  gradleVersion = '2.8'
+}
+
+
